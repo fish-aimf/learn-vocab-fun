@@ -33,7 +33,6 @@
     overflow-x: hidden;
   }
 
-  /* Subtle grain texture */
   body::before {
     content: '';
     position: fixed;
@@ -59,7 +58,7 @@
     margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
     height: 64px;
   }
 
@@ -73,16 +72,13 @@
     flex-shrink: 0;
   }
 
-  .logo span {
-    color: var(--gold);
-  }
+  .logo span { color: var(--gold); }
 
   /* ── SEARCH BAR ── */
   .search-wrap {
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 0;
     background: var(--card-bg);
     border: 1.5px solid var(--border);
     border-radius: 6px;
@@ -119,6 +115,56 @@
     display: flex;
     align-items: center;
   }
+
+  /* ── ENGINE TOGGLE ── */
+  .engine-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .engine-btn {
+    padding: 0.38rem 0.7rem;
+    border: none;
+    border-right: 1px solid var(--border);
+    background: var(--card-bg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+    height: 36px;
+  }
+
+  .engine-btn:last-child { border-right: none; }
+  .engine-btn:hover { background: var(--cream); color: var(--ink); }
+
+  .engine-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 500;
+  }
+
+  .engine-btn .engine-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .engine-btn[data-engine="google"] .engine-dot  { background: #4285f4; }
+  .engine-btn[data-engine="bing"] .engine-dot    { background: #00809d; }
+  .engine-btn[data-engine="ddg"] .engine-dot     { background: #de5833; }
+
+  .engine-btn.active .engine-dot { background: var(--gold); }
 
   /* ── FILTERS ROW ── */
   .filters {
@@ -207,7 +253,7 @@
     z-index: 1;
   }
 
-  /* ── HERO / EMPTY STATE ── */
+  /* ── HERO ── */
   .hero {
     text-align: center;
     padding: 5rem 1rem 4rem;
@@ -223,10 +269,7 @@
     margin-bottom: 1rem;
   }
 
-  .hero-title em {
-    font-style: italic;
-    color: var(--gold);
-  }
+  .hero-title em { font-style: italic; color: var(--gold); }
 
   .hero-sub {
     font-size: 1rem;
@@ -257,8 +300,24 @@
   }
 
   .tip-chip:hover { border-color: var(--gold); color: var(--ink); background: var(--cream); }
-
   .tip-chip strong { color: var(--ink); }
+
+  /* ── ENGINE NOTICE in hero ── */
+  .engine-notice {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .engine-notice strong { color: var(--ink); }
 
   /* ── WORD GRID ── */
   .words-grid {
@@ -284,13 +343,10 @@
     min-height: 90px;
     text-decoration: none;
     color: inherit;
+    animation: fadeUp 0.25s ease both;
   }
 
-  .word-card:hover {
-    background: #fff;
-    z-index: 2;
-  }
-
+  .word-card:hover { background: #fff; z-index: 2; }
   .word-card:hover .card-arrow { opacity: 1; transform: translate(2px, -2px); }
 
   .card-word {
@@ -302,11 +358,7 @@
     line-height: 1.2;
   }
 
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+  .card-meta { display: flex; align-items: center; gap: 0.5rem; }
 
   .card-len {
     font-family: 'DM Mono', monospace;
@@ -326,6 +378,17 @@
     padding: 0.15rem 0.45rem;
     border-radius: 2px;
     border: 1px solid rgba(90, 122, 95, 0.2);
+  }
+
+  .card-engine-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    background: var(--cream);
+    padding: 0.15rem 0.45rem;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    margin-left: auto;
   }
 
   .card-arrow {
@@ -352,7 +415,7 @@
 
   .word-card:hover .card-lookup { opacity: 1; }
 
-  /* ── LOAD MORE / SENTINEL ── */
+  /* ── SENTINEL / SPINNER ── */
   #sentinel {
     height: 60px;
     display: flex;
@@ -382,11 +445,10 @@
 
   /* ── RESULT HEADER ── */
   .result-header {
-    display: flex;
+    display: none;
     align-items: baseline;
     gap: 1rem;
     margin-bottom: 1.25rem;
-    display: none;
   }
 
   .result-title {
@@ -402,7 +464,7 @@
     color: var(--muted);
   }
 
-  /* ── RANDOM SHUFFLE BTN ── */
+  /* ── RANDOM BTN ── */
   .random-btn {
     display: flex;
     align-items: center;
@@ -438,22 +500,13 @@
     margin-bottom: 1rem;
   }
 
-  .no-results p {
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-
-  /* ── ANIMATIONS ── */
-  .word-card {
-    animation: fadeUp 0.25s ease both;
-  }
+  .no-results p { color: var(--muted); font-size: 0.9rem; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── LOADING OVERLAY ── */
   #loading-bar {
     position: fixed;
     top: 0; left: 0;
@@ -464,7 +517,6 @@
     z-index: 999;
   }
 
-  /* ── FOOTER ── */
   .footer-note {
     text-align: center;
     font-family: 'DM Mono', monospace;
@@ -483,13 +535,26 @@
 <header>
   <div class="header-inner">
     <div class="logo">Lexi<span>ca</span></div>
+
     <div class="search-wrap">
       <input type="text" class="search-input" id="searchInput" placeholder="cat, c_t, *tion, str…" autocomplete="off" spellcheck="false">
       <div class="search-hint">_ = any letter &nbsp;·&nbsp; * = wildcard</div>
     </div>
-    <button class="random-btn" id="randomBtn">
-      ⟳ Random
-    </button>
+
+    <!-- Engine toggle -->
+    <div class="engine-toggle" id="engineToggle">
+      <button class="engine-btn" data-engine="google" title="Search on Google">
+        <span class="engine-dot"></span> Google
+      </button>
+      <button class="engine-btn active" data-engine="bing" title="Search on Bing (earn Microsoft Rewards)">
+        <span class="engine-dot"></span> Bing ★
+      </button>
+      <button class="engine-btn" data-engine="ddg" title="Search on DuckDuckGo">
+        <span class="engine-dot"></span> DDG
+      </button>
+    </div>
+
+    <button class="random-btn" id="randomBtn">⟳ Random</button>
   </div>
 </header>
 
@@ -527,6 +592,9 @@
       <div class="tip-chip" onclick="applyTip('*logy')"><strong>*logy</strong> — ends in logy</div>
       <div class="tip-chip" onclick="randomSearch()"><strong>⟳</strong> — surprise me</div>
     </div>
+    <div class="engine-notice" id="engineNotice">
+      Looking up via <strong id="engineNoticeName">Bing</strong> — earn Microsoft Rewards on every click ★
+    </div>
   </div>
 
   <div class="result-header" id="resultHeader">
@@ -547,11 +615,32 @@
   </div>
 
   <div class="footer-note">
-    370,000+ words · click any word to search Google for its meaning
+    370,000+ words · click any word to look up its meaning
   </div>
 </main>
 
 <script>
+  // ── Engine config ──
+  const ENGINES = {
+    google: {
+      name: 'Google',
+      url: w => `https://www.google.com/search?q=${encodeURIComponent(w + ' meaning')}`,
+      notice: 'Looking up via Google'
+    },
+    bing: {
+      name: 'Bing',
+      url: w => `https://www.bing.com/search?q=${encodeURIComponent(w + ' meaning')}`,
+      notice: 'Looking up via Bing — earn Microsoft Rewards on every click ★'
+    },
+    ddg: {
+      name: 'DuckDuckGo',
+      url: w => `https://duckduckgo.com/?q=${encodeURIComponent(w + ' meaning')}`,
+      notice: 'Looking up via DuckDuckGo'
+    }
+  };
+
+  let currentEngine = 'bing'; // default to Bing for rewards
+
   // ── State ──
   let allWords = [];
   let filteredWords = [];
@@ -562,20 +651,49 @@
   let searchDebounce = null;
 
   // ── DOM refs ──
-  const searchInput  = document.getElementById('searchInput');
-  const lenMin       = document.getElementById('lenMin');
-  const lenMax       = document.getElementById('lenMax');
-  const wordsGrid    = document.getElementById('wordsGrid');
-  const hero         = document.getElementById('hero');
-  const resultHeader = document.getElementById('resultHeader');
-  const resultTitle  = document.getElementById('resultTitle');
-  const resultCount  = document.getElementById('resultCount');
-  const noResults    = document.getElementById('noResults');
-  const spinner      = document.getElementById('spinner');
-  const endMsg       = document.getElementById('endMsg');
-  const statPill     = document.getElementById('statPill');
-  const statCount    = document.getElementById('statCount');
-  const loadingBar   = document.getElementById('loading-bar');
+  const searchInput   = document.getElementById('searchInput');
+  const lenMin        = document.getElementById('lenMin');
+  const lenMax        = document.getElementById('lenMax');
+  const wordsGrid     = document.getElementById('wordsGrid');
+  const hero          = document.getElementById('hero');
+  const resultHeader  = document.getElementById('resultHeader');
+  const resultTitle   = document.getElementById('resultTitle');
+  const resultCount   = document.getElementById('resultCount');
+  const noResults     = document.getElementById('noResults');
+  const spinner       = document.getElementById('spinner');
+  const endMsg        = document.getElementById('endMsg');
+  const statPill      = document.getElementById('statPill');
+  const statCount     = document.getElementById('statCount');
+  const loadingBar    = document.getElementById('loading-bar');
+  const engineNotice  = document.getElementById('engineNotice');
+  const engineNoticeName = document.getElementById('engineNoticeName');
+
+  // ── Engine toggle ──
+  document.querySelectorAll('.engine-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.engine-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentEngine = btn.dataset.engine;
+      const cfg = ENGINES[currentEngine];
+
+      // Update hero notice
+      engineNoticeName.textContent = cfg.name;
+      engineNotice.innerHTML = cfg.notice === ENGINES.bing.notice
+        ? `Looking up via <strong>${cfg.name}</strong> — earn Microsoft Rewards on every click ★`
+        : `Looking up via <strong>${cfg.name}</strong>`;
+
+      // Re-render cards so hrefs update
+      if (filteredWords.length > 0 && displayedCount > 0) {
+        const cards = wordsGrid.querySelectorAll('.word-card');
+        cards.forEach(card => {
+          const word = card.querySelector('.card-word').textContent;
+          card.href = cfg.url(word);
+          const badge = card.querySelector('.card-engine-badge');
+          if (badge) badge.textContent = cfg.name;
+        });
+      }
+    });
+  });
 
   // ── Load words ──
   function loadWords() {
@@ -590,7 +708,6 @@
         wordsLoaded = true;
         loadingBar.style.width = '100%';
         setTimeout(() => { loadingBar.style.opacity = 0; }, 400);
-        // run any pending search
         if (searchInput.value || lenMin.value || lenMax.value) runSearch();
       })
       .catch(() => {
@@ -599,20 +716,17 @@
       });
   }
 
-  // ── Filtering logic (optimized) ──
+  // ── Filtering ──
   function buildFilter() {
     const raw = searchInput.value.trim().toLowerCase();
     const mn  = lenMin.value ? parseInt(lenMin.value) : null;
     const mx  = lenMax.value ? parseInt(lenMax.value) : null;
 
-    // Build regex once if pattern mode
     let regex = null;
-    let containsStr = null;
     let exactStr = null;
 
     if (raw) {
       if (!raw.includes('_') && !raw.includes('*')) {
-        // plain text: prefix/contains search
         exactStr = raw;
       } else {
         const pat = '^' + raw.replace(/\*/g, '.*').replace(/_/g, '.') + '$';
@@ -683,7 +797,6 @@
     isLoading = true;
     spinner.style.display = 'block';
 
-    // Use requestAnimationFrame for smooth rendering
     requestAnimationFrame(() => {
       const frag = document.createDocumentFragment();
       slice.forEach((word, i) => {
@@ -693,7 +806,6 @@
       wordsGrid.appendChild(frag);
       displayedCount += slice.length;
       isLoading = false;
-      spinner.style.display = displayedCount >= filteredWords.length ? 'none' : 'block';
       if (displayedCount >= filteredWords.length) {
         spinner.style.display = 'none';
         if (filteredWords.length > PAGE_SIZE) endMsg.style.display = 'block';
@@ -705,9 +817,7 @@
     const a = document.createElement('a');
     a.className = 'word-card';
     a.style.animationDelay = `${(index % PAGE_SIZE) * 8}ms`;
-
-    const url = `https://www.google.com/search?q=${encodeURIComponent(word + ' meaning')}`;
-    a.href = url;
+    a.href = ENGINES[currentEngine].url(word);
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
 
@@ -716,6 +826,7 @@
       <div class="card-meta">
         <span class="card-len">${word.length} letters</span>
         <span class="card-initial">${word[0].toUpperCase()}</span>
+        <span class="card-engine-badge">${ENGINES[currentEngine].name}</span>
       </div>
       <div class="card-lookup">
         <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 9L9 1M9 1H3M9 1V7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -744,16 +855,13 @@
   lenMin.addEventListener('input', () => { clearTimeout(searchDebounce); searchDebounce = setTimeout(runSearch, 300); });
   lenMax.addEventListener('input', () => { clearTimeout(searchDebounce); searchDebounce = setTimeout(runSearch, 300); });
 
-  // Quick filter buttons
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
       if (btn.dataset.len) {
-        const l = btn.dataset.len;
-        lenMin.value = l;
-        lenMax.value = l;
+        lenMin.value = btn.dataset.len;
+        lenMax.value = btn.dataset.len;
       } else if (btn.dataset.range) {
         const [a, b] = btn.dataset.range.split('-');
         lenMin.value = a;
@@ -763,14 +871,12 @@
     });
   });
 
-  // Clear quick filter when typing length manually
   [lenMin, lenMax].forEach(el => {
     el.addEventListener('input', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     });
   });
 
-  // Random
   function randomSearch() {
     if (!wordsLoaded) return;
     searchInput.value = '';
@@ -778,7 +884,6 @@
     lenMax.value = '';
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
 
-    // Pick a random subset
     const shuffled = [...allWords].sort(() => Math.random() - 0.5).slice(0, 500);
     filteredWords = shuffled;
     displayedCount = 0;
